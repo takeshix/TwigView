@@ -129,6 +129,9 @@ class TwigView extends View {
 			$helpers[$name] = $this->loadHelper($helper);
 		}
 
+		if (!isset($_dataForView['cakeDebug'])) {
+			$_dataForView['cakeDebug'] = null;
+		}
 		$data = array_merge($_dataForView, $helpers);	
 		$data['_view'] = $this;
 		
