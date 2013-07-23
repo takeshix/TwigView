@@ -117,26 +117,24 @@ class TwigView extends View {
 		}
 				
 		if ($isCtpFile) {
-			$out = parent::_render($_viewFn, $_dataForView);
-		} else {
-			ob_start();
-			// Setup the helpers from the new Helper Collection
-			$helpers = array();
-			$loaded_helpers = $this->Helpers->attached();
-			foreach($loaded_helpers as $helper) {
-				$name = Inflector::variable($helper);
-				$helpers[$name] = $this->loadHelper($helper);
-			}
-
-			$data = array_merge($_dataForView, $helpers);	
-			$data['_view'] = $this;
-			
-			$relativeFn = str_replace($this->templatePaths, '', $_viewFn);
-			$template = $this->Twig->loadTemplate($relativeFn);
-			echo $template->render($data);
-			$out = ob_get_clean();
+			return parent::_render($_viewFn, $_dataForView);
 		}
+
+		ob_start();
+		// Setup the helpers from the new Helper Collection
+		$helpers = array();
+		$loaded_helpers = $this->Helpers->attached();
+		foreach($loaded_helpers as $helper) {
+			$name = Inflector::variable($helper);
+			$helpers[$name] = $this->loadHelper($helper);
+		}
+
+		$data = array_merge($_dataForView, $helpers);	
+		$data['_view'] = $this;
 		
-		return $out;
+		$relativeFn = str_replace($this->templatePaths, '', $_viewFn);
+		$template = $this->Twig->loadTemplate($relativeFn);
+		echo $template->render($data);
+		return ob_get_clean();
 	}
 }
