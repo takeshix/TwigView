@@ -110,15 +110,15 @@ class TwigView extends View {
  * @param string $___dataForView 
  * @return void
  */
-	protected function _render($___viewFn, $___dataForView = array()) {
-		$isCtpFile = (substr($___viewFn, -3) === 'ctp');
+	protected function _render($_viewFn, $_dataForView = array()) {
+		$isCtpFile = (substr($_viewFn, -3) === 'ctp');
 		
-		if (empty($___dataForView)) {
-			$___dataForView = $this->viewVars;
+		if (empty($_dataForView)) {
+			$_dataForView = $this->viewVars;
 		}
 				
 		if ($isCtpFile) {
-			$out = parent::_render($___viewFn, $___dataForView);
+			$out = parent::_render($_viewFn, $_dataForView);
 		} else {
 			ob_start();
 			// Setup the helpers from the new Helper Collection
@@ -129,10 +129,10 @@ class TwigView extends View {
 				$helpers[$name] = $this->loadHelper($helper);
 			}
 
-			$data = array_merge($___dataForView, $helpers);	
+			$data = array_merge($_dataForView, $helpers);	
 			$data['_view'] = $this;
 			
-			$relativeFn = str_replace($this->templatePaths, '', $___viewFn);
+			$relativeFn = str_replace($this->templatePaths, '', $_viewFn);
 			$template = $this->Twig->loadTemplate($relativeFn);
 			echo $template->render($data);
 			$out = ob_get_clean();
