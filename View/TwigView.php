@@ -150,11 +150,6 @@ class TwigView extends View {
  * @return string
  */
 	public function element($name, $params = array(), $callbacks = false) {
-		// email hack
-		if (substr($name, 0, 5) != 'email') {
-			$this->ext = '.ctp'; // not an email, use .ctp
-		}
-		
 		$return = parent::element($name, $params, $callbacks);
 		$this->ext = '.tpl';
 		return $return;
