@@ -105,8 +105,8 @@ class TwigView extends View {
 /**
  * Render the view
  *
- * @param string $___viewFn 
- * @param string $___dataForView 
+ * @param string $_viewFn 
+ * @param string $_dataForView 
  * @return void
  */
 	protected function _render($_viewFn, $_dataForView = array()) {
