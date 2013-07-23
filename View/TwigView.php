@@ -100,7 +100,6 @@ class TwigView extends View {
 		if (isset($Controller->theme)) {
 			$this->theme = $Controller->theme;
 		}
-		$this->ext = '.tpl';
 	}
 
 /**
@@ -139,19 +138,5 @@ class TwigView extends View {
 		}
 		
 		return $out;
-	}
-
-/**
- * Render an element
- *
- * @param string $name Element Name
- * @param array $params Parameters
- * @param boolean $callbacks Fire callbacks
- * @return string
- */
-	public function element($name, $params = array(), $callbacks = false) {
-		$return = parent::element($name, $params, $callbacks);
-		$this->ext = '.tpl';
-		return $return;
 	}
 }
