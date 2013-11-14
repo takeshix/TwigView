@@ -3,7 +3,7 @@
  * Just a hacked version 'include'
  *
  *    {% element "login_form" %}
- *     
+ *
  *     => loads: APP/views/elements/login_form.tpl
  */
 
@@ -30,6 +30,9 @@ class Twig_TokenParser_Element extends Twig_TokenParser {
 		if ($this->parser->getStream()->test(Twig_Token::NAME_TYPE, 'with')) {
 			$this->parser->getStream()->next();
 			$variables = $this->parser->getExpressionParser()->parseExpression();
+		}
+		if ($this->parser->getStream()->test(Twig_Token::NAME_TYPE, 'only')) {
+			$only = true;
 		}
 
 		$this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
@@ -62,11 +65,11 @@ class Twig_Node_Element extends Twig_Node {
 /**
  * Constructor
  *
- * @param Twig_Node_Expression $expr 
- * @param Twig_Node_Expression $variables 
+ * @param Twig_Node_Expression $expr
+ * @param Twig_Node_Expression $variables
  * @param bool $only
- * @param string $lineno 
- * @param string $tag 
+ * @param string $lineno
+ * @param string $tag
  */
 	public function __construct(Twig_Node_Expression $expr, Twig_Node_Expression $variables = null, $only = false, $lineno, $tag = null) {
 		parent::__construct(array('expr' => $expr, 'variables' => $variables), array('only' => (Boolean) $only), $lineno, $tag);
@@ -81,7 +84,7 @@ class Twig_Node_Element extends Twig_Node {
 		$compiler->addDebugInfo($this);
 
 		$template = $this->getNode('expr')->getAttribute('value');
-		$value = 'Elements' . DS . $template . '.tpl';
+		$value = 'Elements' . DS . $template . $this->_readConfigure('TwigView.ext', ".tpl");
 		$this->getNode('expr')->setAttribute('value', $value);
 
 		if ($this->getNode('expr') instanceof Twig_Node_Expression_Constant) {
@@ -122,4 +125,19 @@ class Twig_Node_Element extends Twig_Node {
 
 		$compiler->raw(");\n");
 	}
+
+	// protected _readConfigure($key, $default_value) {{{
+	/**
+	 * _readConfigure
+	 *
+	 * @param string $key
+	 * @param mixed $default_value
+	 * @access protected
+	 * @return mixed
+	 */
+	protected function _readConfigure($key, $default_value) {
+		$val = Configure::read($key);
+		return $val == "" ? $default_value : $val;
+	}
+	// }}}
 }
