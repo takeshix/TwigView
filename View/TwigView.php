@@ -39,6 +39,7 @@ require_once($twigPath . 'Lib' . DS . 'Twig_Extension_Number.php');
 
 // get twig core extension (overwrite trans block)
 require_once($twigPath . 'Lib' . DS . 'CoreExtension.php');
+require_once($twigPath . 'Lib' . DS . 'TwigConfig.php');
 
 /**
  * TwigView for CakePHP
@@ -81,22 +82,15 @@ class TwigView extends View {
  *
  * @param Controller $Controller Controller
  */
-	public function __construct(Controller $Controller) {
+	public function __construct(Controller $Controller = null) {
 
-		$autoescape = Configure::read('TwigView.autoescape');
-		if ($autoescape == "") {
-			$autoescape = true;
-		}
-		$ext = Configure::read('TwigView.ext');
-		if ($ext == "") {
-		}
 		$this->templatePaths = App::path('View');
 		$loader = new Twig_Loader_Filesystem($this->templatePaths[0]);
 		$this->Twig = new Twig_Environment($loader, array(
 			'cache' => TWIG_VIEW_CACHE,
 			'charset' => strtolower(Configure::read('App.encoding')),
 			'auto_reload' => Configure::read('debug') > 0,
-			'autoescape' => $this->_readConfigure('TwigView.autoescape', true),
+			'autoescape' => TwigConfig::getAutoescape(),
 			'debug' => Configure::read('debug') > 0
 		));;
 
@@ -111,7 +105,7 @@ class TwigView extends View {
 		if (isset($Controller->theme)) {
 			$this->theme = $Controller->theme;
 		}
-		$this->ext = $this->_readConfigure('TwigView.ext', ".tpl");
+		$this->ext = TwigConfig::getExtension();
 	}
 
 /**
@@ -152,21 +146,6 @@ class TwigView extends View {
 		echo $template->render($data);
 		return ob_get_clean();
 	}
-
-	// protected _readConfigure($key, $default_value) {{{
-	/**
-	 * _readConfigure
-	 *
-	 * @param string $key
-	 * @param mixed $default_value
-	 * @access protected
-	 * @return mixed
-	 */
-	protected function _readConfigure($key, $default_value) {
-		$val = Configure::read($key);
-		return $val == "" ? $default_value : $val;
-	}
-	// }}}
 
 /**
  * Render an element

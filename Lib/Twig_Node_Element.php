@@ -84,7 +84,7 @@ class Twig_Node_Element extends Twig_Node {
 		$compiler->addDebugInfo($this);
 
 		$template = $this->getNode('expr')->getAttribute('value');
-		$value = 'Elements' . DS . $template . $this->_readConfigure('TwigView.ext', ".tpl");
+		$value = 'Elements' . DS . $template . TwigConfig::getExtension();
 		$this->getNode('expr')->setAttribute('value', $value);
 
 		if ($this->getNode('expr') instanceof Twig_Node_Expression_Constant) {
@@ -125,19 +125,4 @@ class Twig_Node_Element extends Twig_Node {
 
 		$compiler->raw(");\n");
 	}
-
-	// protected _readConfigure($key, $default_value) {{{
-	/**
-	 * _readConfigure
-	 *
-	 * @param string $key
-	 * @param mixed $default_value
-	 * @access protected
-	 * @return mixed
-	 */
-	protected function _readConfigure($key, $default_value) {
-		$val = Configure::read($key);
-		return $val == "" ? $default_value : $val;
-	}
-	// }}}
 }
