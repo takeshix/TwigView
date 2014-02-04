@@ -35,7 +35,7 @@ class TwigConfig {
 	 */
 	static protected function _readConfigure($key, $default_value) {
 		$val = Configure::read($key);
-		return $val == "" ? $default_value : $val;
+		return is_null($val) ? $default_value : $val;
 	}
 	// }}}
 }
