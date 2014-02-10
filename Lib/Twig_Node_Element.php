@@ -26,6 +26,7 @@ class Twig_TokenParser_Element extends Twig_TokenParser {
  */
 	public function parse(Twig_Token $token) {
 		$expr = $this->parser->getExpressionParser()->parseExpression();
+		$only = false;
 		$variables = null;
 		if ($this->parser->getStream()->test(Twig_Token::NAME_TYPE, 'with')) {
 			$this->parser->getStream()->next();
@@ -36,7 +37,7 @@ class Twig_TokenParser_Element extends Twig_TokenParser {
 		}
 
 		$this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
-		return new Twig_Node_Element($expr, $variables, $token->getLine(), $this->getTag());
+		return new Twig_Node_Element($expr, $variables, $only, $token->getLine(), $this->getTag());
 	}
 
 /**
