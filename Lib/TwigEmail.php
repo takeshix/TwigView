@@ -24,6 +24,38 @@ class TwigEmail extends CakeEmail {
 	static $autoEscape = false;
 
 	/* (non-PHPdoc)
+	 * @see CakeEmail::__construct()
+	 */
+	public function __construct($config = null) {
+		if (empty($config) && $this->hasConfig("default")) {
+			$config = "default";
+		}
+		parent::__construct($config);
+	}
+
+	// protected hasConfig($config = null) {{{
+	/**
+	 * hasConfig
+	 *
+	 * @param string $config
+	 * @access protected
+	 * @return bool
+	 */
+	protected function hasConfig($config = null) {
+		if (is_string($config)) {
+			if (!class_exists($this->_configClass) && !config('email')) {
+				return false;
+			}
+			$configs = new $this->_configClass();
+			if (!isset($configs->{$config})) {
+				return false;
+			}
+		}
+		return true;
+	}
+	// }}}
+
+	/* (non-PHPdoc)
 	 * @see CakeEmail::reset()
 	 */
 	public function reset() {
@@ -83,7 +115,7 @@ class TwigEmail extends CakeEmail {
 		$this->{$varName} = $list;
 		return $this;
 	}
-	
+
 	/**
 	 * Validates email address(rfc & japanese feature phone)
 	 * @param string $email
