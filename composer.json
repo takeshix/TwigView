@@ -1,0 +1,16 @@
+{
+	"name": "takeshix/twig-view",
+	"description": "Twig powered View for CakePHP",
+	"type": "cakephp-plugin",
+	"license": "MIT",
+	"keywords": [
+		"twig",
+		"view",
+		"cakephp"
+	],
+	"require": {
+		"php": ">=5.2.4",
+		"twig/twig": "1.16.*",
+		"composer/installers": "*"
+	}
+}

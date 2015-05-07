@@ -1,6 +1,5 @@
 <?php
 
-App::import('Lib', 'TwigView.ElementToken');
 
 /**
  * Core Extension
